@@ -1,0 +1,76 @@
+#include "fmc.h"
+
+#include <string>
+
+int fmc::bit_width(int n){
+	if(n <= 0) return -1;
+	int bits = 0;
+	while(n > 0){
+		bits++;
+		n >>= 1;
+	}
+	return bits;
+}
+
+int fmc::pow_mod(int b, int n, int m){
+	int remainder = 1;
+	int power = b % m;
+
+	for(int i = 0; i < fmc::bit_width(n);i++){
+		if(n >> i & 1){
+			remainder = (remainder*power) % m;
+		}
+		power = (power*power) % m;
+	}
+	return remainder;
+}
+
+void fmc::turn_into_numerals(std::string raw, std::vector<std::string>& blocks, int block_size){
+	for(int i = 0;i < raw.size();i++){
+		if(raw[i] < 'A' || raw[i] > 'Z'){
+			if(raw[i] > 'a' && raw[i] < 'z'){
+				raw[i] -= ('a' - 'A');
+			} else if(raw[i] == 32){
+				raw[i] = '[';
+			} else {
+				raw.erase(i);
+				i--;
+			}
+		}
+	}
+	
+	int digit_size = block_size/2;
+
+	int block_quantity = raw.size()/digit_size;
+	
+	if((raw.size() % digit_size) != 0){
+		int rest = raw.size() % digit_size;
+		block_quantity++;
+		for(int i = 0;i<rest;i++) { raw.push_back('X'); }
+	}
+
+	for(int i = 0;i<block_quantity;i++){
+		std::string new_block = "";
+		for(int x = 0; x < digit_size;x++){
+			new_block.append(fmc::get_integer_representation(raw[x+i*digit_size]));
+		}
+		blocks.push_back(new_block);
+	}
+	return;
+}
+
+std::string fmc::get_integer_representation(char c){
+	int old_digit = c - 'A';
+	std::string new_digit = "";
+
+	if(old_digit < 10) new_digit.push_back('0');
+	new_digit.append(std::to_string(old_digit));
+	return new_digit;
+
+}
+
+void fmc::encrypt_block(Key key, std::string& block){
+	return;
+}
+
+
