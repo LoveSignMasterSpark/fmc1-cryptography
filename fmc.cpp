@@ -16,6 +16,7 @@ int fmc::pow_mod(int b, int n, int m){
 	int remainder = 1;
 	int power = b % m;
 
+	// gets base 2 representation of number, inline with fast modular exponentiation from Discrete Mathematics
 	for(int i = 0; i < fmc::bit_width(n);i++){
 		if(n >> i & 1){
 			remainder = (remainder*power) % m;
@@ -26,6 +27,8 @@ int fmc::pow_mod(int b, int n, int m){
 }
 
 void fmc::turn_into_numerals(std::string raw, std::vector<std::string>& blocks, int block_size){
+	// cleans up string, leaves only characters handled by our system
+	// ugly, needs to be its own function eventually
 	for(int i = 0;i < raw.size();i++){
 		if(raw[i] < 'A' || raw[i] > 'Z'){
 			if(raw[i] > 'a' && raw[i] < 'z'){
@@ -42,13 +45,15 @@ void fmc::turn_into_numerals(std::string raw, std::vector<std::string>& blocks, 
 	int digit_size = block_size/2;
 
 	int block_quantity = raw.size()/digit_size;
-	
+
+	// pads end of string so our blocks are equivalent in size
 	if((raw.size() % digit_size) != 0){
 		int rest = raw.size() % digit_size;
 		block_quantity++;
 		for(int i = 0;i<rest;i++) { raw.push_back('X'); }
 	}
 
+	// runs through our string, separates it into blocks, then turns them into our own base XX alphabet
 	for(int i = 0;i<block_quantity;i++){
 		std::string new_block = "";
 		for(int x = 0; x < digit_size;x++){
@@ -58,6 +63,7 @@ void fmc::turn_into_numerals(std::string raw, std::vector<std::string>& blocks, 
 	}
 	return;
 }
+
 
 std::string fmc::get_integer_representation(char c){
 	int old_digit = c - 'A';
