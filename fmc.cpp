@@ -35,7 +35,7 @@ void fmc::turn_into_numerals(std::string raw, std::vector<int>& blocks, int bloc
 			if(raw[i] > 'a' && raw[i] < 'z'){
 				raw[i] -= ('a' - 'A');
 			} else if(raw[i] == 32){
-				raw[i] = '[';
+				raw[i] = ' ';
 			} else {
 				raw.erase(i);
 				i--;
@@ -76,6 +76,14 @@ int fmc::get_equivalent_from_map(char c){
 char fmc::get_equivalent_from_map(int n){
 	if(auto search = alphabet_int.find(n); search != alphabet_int.end()){ return search->second; }
 	else {	return 'A'; }
+}
+
+void fmc::encrypt_vector(Key key, std::vector<int>& blocks){
+	for(int i = 0; i < blocks.size(); i++){ encrypt_block(key, blocks[i]); }
+}
+
+void fmc::decrypt_vector(Key key, std::vector<int>& blocks){
+	
 }
 
 void fmc::encrypt_block(Key key, int& block){

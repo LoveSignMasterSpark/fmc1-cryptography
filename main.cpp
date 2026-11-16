@@ -15,7 +15,7 @@ int main(){
 	// . . .
 	std::vector<int> vetor_teste;
 
-	fmc::turn_into_numerals("ABCDEFGHIJKLMNOPQRSTUVWXYZ", vetor_teste, key.get_max_digits());
+	fmc::turn_into_numerals("ABCDEFGHIJKLMNOPQRSTUVWXYZ ", vetor_teste, key.get_max_digits());
 
 	std::cout << "644's bit width: " << fmc::bit_width(644) << std::endl;
 
@@ -24,14 +24,9 @@ int main(){
 		std::cout << vetor_teste[i] << " ";
 	}
 	std::cout << std::endl;
-	
-//	std::cout << "getting rest of 3^644 mod 645: " << fmc::pow_mod(3, 644, 645) << std::endl;
 
 	// encrypt
-	for(int i = 0; i < vetor_teste.size(); i++){
-		fmc::encrypt_block(key, vetor_teste[i]);
-	}
-
+	fmc::encrypt_vector(key, vetor_teste);
 	for(int i = 0; i < vetor_teste.size();i++){
 		std::cout << vetor_teste[i] << " ";
 	}

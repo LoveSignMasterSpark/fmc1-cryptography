@@ -20,9 +20,11 @@ static int pow_mod(int b, int n, int m);
 // main encryption function that turns string into RSA encrypted vector
 static void turn_into_numerals(std::string raw, std::vector<int>& blocks, int key_size);
 
-// OBSOLETE!! update to professor's own alphabet and use int!!
-// helper function to turn our base 26 digits into RSA encrypted blocks
+static void encrypt_vector(Key key, std::vector<int>& blocks);
+static void decrypt_vector(Key key, std::vector<int>& blocks);
+
 static void encrypt_block(Key key, int& block);
+static void decrypt_block(Key key, int& block);
 
 // helper functions to exchange values from our own alphabet lookup tables
 static int get_equivalent_from_map(char c);
