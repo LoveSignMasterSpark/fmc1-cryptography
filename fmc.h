@@ -24,10 +24,7 @@ static void turn_into_numerals(std::string raw, std::vector<int>& blocks, int ke
 // helper function to turn our base 26 digits into RSA encrypted blocks
 static void encrypt_block(Key key, std::string& block);
 
-//OBSOLETE!! update to use int
-// helper function that turns our string elements into our base 26 alphabet of choice
-static std::string get_integer_representation(char c);
-
+// helper functions to exchange values from our own alphabet lookup tables
 static int get_equivalent_from_map(char c);
 static char get_equivalent_from_map(int n);
 
