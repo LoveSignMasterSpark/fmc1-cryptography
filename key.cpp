@@ -1,8 +1,12 @@
 #include <cmath>
 #include "key.h"
 
-
 Key::Key(int n, int e) : modulo(n), exponential(e) {}
+Key::Key(int d) : decryption(d) {}
+Key::Key(int n, int e, int d) : modulo(n), exponential(e), decryption(d) {}
+
+
+
 
 // this is something like
 // 2626 < n < 262626

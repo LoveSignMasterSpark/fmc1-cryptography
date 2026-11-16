@@ -83,11 +83,13 @@ void fmc::encrypt_vector(Key key, std::vector<int>& blocks){
 }
 
 void fmc::decrypt_vector(Key key, std::vector<int>& blocks){
-	
+	for(int i = 0; i < blocks.size(); i++){ decrypt_block(key, blocks[i]); }
 }
 
 void fmc::encrypt_block(Key key, int& block){
 	block = pow_mod(block, key.exponential, key.modulo);
 }
 
-
+void fmc::decrypt_block(Key key, int& block){
+	block = pow_mod(block, key.decryption, key.modulo);
+}

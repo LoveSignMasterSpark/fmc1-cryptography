@@ -3,9 +3,11 @@
 
 class Key{
 public:
-int modulo, exponential;
+int modulo, exponential, decryption;
 
 Key(int n, int e);
+Key(int d);
+Key(int n, int e, int d);
 int get_max_digits();
 int digits = 39;
 };

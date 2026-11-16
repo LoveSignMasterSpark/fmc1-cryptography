@@ -5,7 +5,7 @@
 #include "fmc.h"
 
 int main(){
-	Key key(2537, 13);
+	Key key(2537, 13, 937);
 	std::cout << "Number of digits possible: " << key.get_max_digits() << std::endl;
 
 	std::cout << "Converting O: " << fmc::get_equivalent_from_map('O') << std::endl;
@@ -27,17 +27,15 @@ int main(){
 
 	// encrypt
 	fmc::encrypt_vector(key, vetor_teste);
+/*
 	for(int i = 0; i < vetor_teste.size();i++){
 		std::cout << vetor_teste[i] << " ";
 	}
 	std::cout << std::endl;
-
+*/
 
 	// decrypt
-	for(int i = 0; i < vetor_teste.size(); i++){
-		vetor_teste[i] = fmc::pow_mod(vetor_teste[i], 937, key.modulo);
-	}
-
+	fmc::decrypt_vector(key, vetor_teste);	
 	for(int i = 0; i < vetor_teste.size();i++){
 		std::cout << vetor_teste[i] << " ";
 	}
