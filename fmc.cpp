@@ -1,6 +1,7 @@
 #include "fmc.h"
 
 #include <string>
+#include <cmath>
 
 int fmc::bit_width(int n){
 	if(n <= 0) return -1;
@@ -26,7 +27,7 @@ int fmc::pow_mod(int b, int n, int m){
 	return remainder;
 }
 
-void fmc::turn_into_numerals(std::string raw, std::vector<std::string>& blocks, int block_size){
+void fmc::turn_into_numerals(std::string raw, std::vector<int>& blocks, int block_size){
 	// cleans up string, leaves only characters handled by our system
 	// ugly, needs to be its own function eventually
 	for(int i = 0;i < raw.size();i++){
@@ -55,16 +56,35 @@ void fmc::turn_into_numerals(std::string raw, std::vector<std::string>& blocks, 
 
 	// runs through our string, separates it into blocks, then turns them into our own base XX alphabet
 	for(int i = 0;i<block_quantity;i++){
-		std::string new_block = "";
+		int new_block = 0;
 		for(int x = 0; x < digit_size;x++){
-			new_block.append(fmc::get_integer_representation(raw[x+i*digit_size]));
+			new_block += fmc::get_equivalent_from_map(raw[x+i*digit_size]) * std::pow(10, (digit_size-x-1)*2);
 		}
 		blocks.push_back(new_block);
 	}
 	return;
 }
 
+int fmc::get_equivalent_from_map(char c){
+	if(auto search = alphabet_char.find(c); search != alphabet_char.end()){
+		return search->second;
+	}
+	else{
+		return 11; 
+	}
+}
 
+char fmc::get_equivalent_from_map(int n){
+	if(auto search = alphabet_int.find(n); search != alphabet_int.end()){
+		return search->second;
+	}
+	else{
+		return 'A'; 
+	}
+}
+
+// EXTREMELY OBSOLETE!!!!!!!!!
+// need function to convert 11 - 54 (no zeroes) to characters and vice versa later
 std::string fmc::get_integer_representation(char c){
 	int old_digit = c - 'A';
 	std::string new_digit = "";
@@ -74,6 +94,8 @@ std::string fmc::get_integer_representation(char c){
 	return new_digit;
 
 }
+
+
 
 void fmc::encrypt_block(Key key, std::string& block){
 	return;

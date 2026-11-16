@@ -8,16 +8,16 @@ int main(){
 	Key key(2637, 13);
 	std::cout << "Number of digits possible: " << key.get_max_digits() << std::endl;
 
-	std::cout << "Converting O to string: " << fmc::get_integer_representation('O') << std::endl;
-	std::cout << "Converting A to string: " << fmc::get_integer_representation('A') << std::endl;
-	std::cout << "Converting B to string: " << fmc::get_integer_representation('B') << std::endl;
+	std::cout << "Converting O: " << fmc::get_equivalent_from_map('O') << std::endl;
+	std::cout << "Converting A: " << fmc::get_equivalent_from_map('A') << std::endl;
+	std::cout << "Converting B: " << fmc::get_equivalent_from_map('B') << std::endl;
 
 	// . . .
-	std::vector<std::string> vetor_teste;
+	std::vector<int> vetor_teste;
 
-	fmc::turn_into_numerals("ABCDEFGHIJLMNOPQRSTUVXYZ", vetor_teste, key.get_max_digits());
+	fmc::turn_into_numerals("ABCDEFGHIJKLMNOPQRSTUVWXYZ", vetor_teste, key.get_max_digits());
 
-	std::cout << fmc::bit_width(644) << std::endl;
+	std::cout << "644's bit width: " << fmc::bit_width(644) << std::endl;
 
 
 	for(int i = 0; i < vetor_teste.size();i++){
@@ -25,7 +25,7 @@ int main(){
 	}
 	std::cout << std::endl;
 	
-	std::cout << fmc::pow_mod(3, 644, 645) << std::endl;
+	std::cout << "getting rest of 3^644 mod 645: " << fmc::pow_mod(3, 644, 645) << std::endl;
 
 	return 0;
 }
