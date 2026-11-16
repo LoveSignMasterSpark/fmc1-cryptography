@@ -7,7 +7,7 @@ int modulo, exponential;
 
 Key(int n, int e);
 int get_max_digits();
-
+int digits = 39;
 };
 
 #endif

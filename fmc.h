@@ -22,7 +22,7 @@ static void turn_into_numerals(std::string raw, std::vector<int>& blocks, int ke
 
 // OBSOLETE!! update to professor's own alphabet and use int!!
 // helper function to turn our base 26 digits into RSA encrypted blocks
-static void encrypt_block(Key key, std::string& block);
+static void encrypt_block(Key key, int& block);
 
 // helper functions to exchange values from our own alphabet lookup tables
 static int get_equivalent_from_map(char c);

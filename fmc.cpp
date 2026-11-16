@@ -58,7 +58,7 @@ void fmc::turn_into_numerals(std::string raw, std::vector<int>& blocks, int bloc
 	for(int i = 0;i<block_quantity;i++){
 		int new_block = 0;
 		for(int x = 0; x < digit_size;x++){
-			// should handle all cases; scales well with different block sizes i think
+			// scales well with different block sizes i think
 			new_block += fmc::get_equivalent_from_map(raw[x+i*digit_size]) * std::pow(10, (digit_size-x-1)*2);
 		}
 		blocks.push_back(new_block);
@@ -69,25 +69,17 @@ void fmc::turn_into_numerals(std::string raw, std::vector<int>& blocks, int bloc
 // this wouldve been prettier if i did this in java
 // but hindsight is 20 20 etc etc
 int fmc::get_equivalent_from_map(char c){
-	if(auto search = alphabet_char.find(c); search != alphabet_char.end()){
-		return search->second;
-	}
-	else{
-		return 11; 
-	}
+	if(auto search = alphabet_char.find(c); search != alphabet_char.end()){ return search->second; }
+	else { return 11; }
 }
 
 char fmc::get_equivalent_from_map(int n){
-	if(auto search = alphabet_int.find(n); search != alphabet_int.end()){
-		return search->second;
-	}
-	else{
-		return 'A'; 
-	}
+	if(auto search = alphabet_int.find(n); search != alphabet_int.end()){ return search->second; }
+	else {	return 'A'; }
 }
 
-void fmc::encrypt_block(Key key, std::string& block){
-	return;
+void fmc::encrypt_block(Key key, int& block){
+	block = pow_mod(block, key.exponential, key.modulo);
 }
 
 
