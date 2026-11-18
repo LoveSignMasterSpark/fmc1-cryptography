@@ -180,8 +180,22 @@ void fmc::find_decryption_keys(Key key, std::vector<int> message_blocks){
 }
 
 
-int fmc::get_inverse(int exponential, int modulo){
-	return -1;
+int fmc::get_inverse(int value, int modulo){
+	int last_inverse = 0;
+	int inverse = 1;
+	while(value!=0){
+		int mult = modulo/value;
+		int x = modulo - value*mult;
+		modulo = value;
+		value = x;
+		x = inverse;
+		inverse = last_inverse - inverse*mult;
+		last_inverse = x;
+	}
+
+	// brother. you should put me in front of the firing squad for this one.
+	return last_inverse;
+
 }
 
 

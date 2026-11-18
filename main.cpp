@@ -6,6 +6,8 @@
 
 int main(){
 
+	std::cout << fmc::get_inverse(144, 233) << std::endl;
+
 	std::vector<int> primes = fmc::sieve_all_primes(10);
 	for(int i = 0;i < primes.size();i++){
 		std::cout << primes[i] << " ";
