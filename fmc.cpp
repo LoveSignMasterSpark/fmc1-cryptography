@@ -2,6 +2,7 @@
 
 #include <string>
 #include <cmath>
+#include <iostream>
 
 int fmc::bit_width(int n){
 	if(n <= 0) return -1;
@@ -59,21 +60,50 @@ void fmc::turn_into_numerals(std::string raw, std::vector<int>& blocks, int bloc
 		int new_block = 0;
 		for(int x = 0; x < digit_size;x++){
 			// scales well with different block sizes i think
-			new_block += fmc::get_equivalent_from_map(raw[x+i*digit_size]) * std::pow(10, (digit_size-x-1)*2);
+			new_block += fmc::get_int_from_map(raw[x+i*digit_size]) * std::pow(10, (digit_size-x-1)*2);
 		}
 		blocks.push_back(new_block);
 	}
 	return;
 }
 
+void fmc::turn_into_array(std::string numbers, std::vector<int>& blocks){
+	while(1){
+		int position = numbers.find('-');
+		std::cout << "Found - at position " << position << std::endl;
+
+		blocks.push_back(std::stoi(numbers.substr(0, position)));
+	
+		if(position == numbers.npos){ return; }
+		else{ numbers.erase(0, position+1); }
+	}
+}
+
+std::string fmc::turn_into_string(std::vector<int>& blocks, int key_quantity){
+	// yeah this is gonna be ugly as fuck
+	// yeah fuck ittt 
+	std::string message = "";
+	for(int i = 0; i < blocks.size(); i++){
+		std::string code = std::to_string(blocks[i]);
+		for(int x = 0; x < key_quantity; x++){
+			message += get_char_from_map(std::stoi(code.substr(x*2, (x*2)+2))); // lol
+			// dont ask me why +2 here. everything tells me this should be +1.
+		}
+	}
+
+	return message;
+
+}
+
+
 // this wouldve been prettier if i did this in java
 // but hindsight is 20 20 etc etc
-int fmc::get_equivalent_from_map(char c){
+int fmc::get_int_from_map(char c){
 	if(auto search = alphabet_char.find(c); search != alphabet_char.end()){ return search->second; }
 	else { return 11; }
 }
 
-char fmc::get_equivalent_from_map(int n){
+char fmc::get_char_from_map(int n){
 	if(auto search = alphabet_int.find(n); search != alphabet_int.end()){ return search->second; }
 	else {	return 'A'; }
 }

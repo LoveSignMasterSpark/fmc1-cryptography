@@ -5,14 +5,13 @@
 #include "fmc.h"
 
 int main(){
+
+	
+
+
 	Key key(2537, 13, 937);
 	std::cout << "Number of digits possible: " << key.get_max_digits() << std::endl;
 
-	std::cout << "Converting O: " << fmc::get_equivalent_from_map('O') << std::endl;
-	std::cout << "Converting A: " << fmc::get_equivalent_from_map('A') << std::endl;
-	std::cout << "Converting B: " << fmc::get_equivalent_from_map('B') << std::endl;
-
-	// . . .
 	std::vector<int> vetor_teste;
 
 	fmc::turn_into_numerals("ABCDEFGHIJKLMNOPQRSTUVWXYZ ", vetor_teste, key.get_max_digits());
@@ -27,12 +26,12 @@ int main(){
 
 	// encrypt
 	fmc::encrypt_vector(key, vetor_teste);
-/*
+
 	for(int i = 0; i < vetor_teste.size();i++){
 		std::cout << vetor_teste[i] << " ";
 	}
 	std::cout << std::endl;
-*/
+
 
 	// decrypt
 	fmc::decrypt_vector(key, vetor_teste);	
@@ -41,6 +40,8 @@ int main(){
 	}
 	std::cout << std::endl;
 
+
+	std::cout << fmc::turn_into_string(vetor_teste, key.get_max_digits()/2) << std::endl;
 
 	return 0;
 }
