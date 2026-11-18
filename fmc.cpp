@@ -142,8 +142,10 @@ std::vector<int> fmc::sieve_all_primes(int n){
 	for(int i = 2; i <= n;i++){
 		if(is_prime[i]){
 			primes.push_back(i);
+//			std::cout << i << " ";
 		}
 	}
+//	std::cout << std::endl;
 	return primes;
 }
 
@@ -160,14 +162,20 @@ std::vector<int> fmc::sieve_all_primes(int n){
 void fmc::find_decryption_keys(Key key, std::vector<int> message_blocks){
 
 	
-	std::vector<int> primes = sieve_all_primes(key.exponential);
+	std::vector<int> primes = sieve_all_primes(key.modulo);
 
 	for(int i = 0; i < primes.size();i++){
 		for(int o = i+1; o < primes.size();o++){
-			if(primes[i] * primes[o] == key.exponential){
+			if(primes[i] * primes[o] == key.modulo){
+				std::cout << primes[i] << " * " << primes[o] << " = " << key.exponential << "??" << std::endl;
+
 				int p = primes[i] - 1;
 				int q = primes[o] - 1;
+				int pq = p * q;
 				// find inverse of encryption modulo (i-1)(o-1)
+
+				key.decryption = get_inverse(key.exponential, pq);
+
 				decrypt_and_print(key, p, q, message_blocks);
 				return;
 			}
@@ -181,6 +189,10 @@ void fmc::find_decryption_keys(Key key, std::vector<int> message_blocks){
 
 
 int fmc::get_inverse(int value, int modulo){
+	int original_modulo = modulo;
+
+	std::cout << "Trying to find inverse of " << value << " mod " << modulo << std::endl;
+
 	int last_inverse = 0;
 	int inverse = 1;
 	while(value!=0){
@@ -191,9 +203,19 @@ int fmc::get_inverse(int value, int modulo){
 		x = inverse;
 		inverse = last_inverse - inverse*mult;
 		last_inverse = x;
+		std::cout << value << " | " << inverse << std::endl;
+	}
+
+	std::cout << std::endl;
+
+	if(last_inverse < 0){
+		while(last_inverse<0){
+			last_inverse += original_modulo;
+		}
 	}
 
 	// brother. you should put me in front of the firing squad for this one.
+	std::cout << "Found as inverse: " << last_inverse << std::endl;
 	return last_inverse;
 
 }

@@ -9,7 +9,7 @@ Key(int n, int e);
 Key(int d);
 Key(int n, int e, int d);
 int get_max_digits();
-int digits = 39;
+int digits = 43;
 };
 
 #endif

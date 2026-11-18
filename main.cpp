@@ -6,15 +6,18 @@
 
 int main(){
 
-	std::cout << fmc::get_inverse(144, 233) << std::endl;
 
-	std::vector<int> primes = fmc::sieve_all_primes(10);
-	for(int i = 0;i < primes.size();i++){
-		std::cout << primes[i] << " ";
-	}
-	std::cout << std::endl;
+	Key key(14279, 5347);
+	std::string message_encrypted = "4961-3072-9263-324-11807-4221-551-13714-1351-7742-13335-1748-5453-1183-4591-6815-1748-4221-1501-131-263-3435-3382-13501-7616-6966-393-13055-6309-1183-916-6904-11807-3371-3749";
+
+	std::vector<int> message_blocks;
+
+	fmc::turn_into_array(message_encrypted, message_blocks);
+
+	fmc::find_decryption_keys(key, message_blocks);
 
 
+/*
 
 	Key decryption(1901);
 	decryption.modulo = 3071;
@@ -39,7 +42,7 @@ int main(){
 
 	std::cout << fmc::turn_into_string(vetor) << std::endl;
 
-
+*/
 
 
 /*
