@@ -70,7 +70,6 @@ void fmc::turn_into_numerals(std::string raw, std::vector<int>& blocks, int bloc
 void fmc::turn_into_array(std::string numbers, std::vector<int>& blocks){
 	while(1){
 		int position = numbers.find('-');
-		std::cout << "Found - at position " << position << std::endl;
 
 		blocks.push_back(std::stoi(numbers.substr(0, position)));
 	
@@ -79,19 +78,21 @@ void fmc::turn_into_array(std::string numbers, std::vector<int>& blocks){
 	}
 }
 
-std::string fmc::turn_into_string(std::vector<int>& blocks, int key_quantity){
+std::string fmc::turn_into_string(std::vector<int>& blocks){
 	// yeah this is gonna be ugly as fuck
 	// yeah fuck ittt 
 	std::string message = "";
 	for(int i = 0; i < blocks.size(); i++){
 		std::string code = std::to_string(blocks[i]);
-		for(int x = 0; x < key_quantity; x++){
-			message += get_char_from_map(std::stoi(code.substr(x*2, (x*2)+2))); // lol
-			// dont ask me why +2 here. everything tells me this should be +1.
-		}
+		message += code;
 	}
 
-	return message;
+	std::string message_decoded = "";
+	for(int i = 0; i < message.size()/2;i++){
+		message_decoded += get_char_from_map(std::stoi(message.substr(i*2, 2)));
+	}
+
+	return message_decoded;
 
 }
 
