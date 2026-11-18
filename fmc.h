@@ -37,6 +37,13 @@ static void decrypt_block(Key key, int& block);
 static int get_int_from_map(char c);
 static char get_char_from_map(int n);
 
+static void find_decryption_keys(Key key, std::vector<int> message_blocks);
+
+static std::vector<int> sieve_all_primes(int n);
+
+static void decrypt_and_print(Key key, int p, int q, std::vector<int>& message_blocks);
+static int get_inverse(int exponential, int modulo);	
+
 // god i wish there was an easier way of doing this. . .
 inline static const std::unordered_map<int, char> alphabet_int{
 	{11, 'A'}, {12, 'B'}, {13, 'C'}, {14, 'D'}, {15, 'E'}, {16, 'F'}, {17, 'G'}, {18, 'H'}, {19, 'I'},

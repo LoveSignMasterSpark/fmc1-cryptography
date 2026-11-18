@@ -6,6 +6,14 @@
 
 int main(){
 
+	std::vector<int> primes = fmc::sieve_all_primes(10);
+	for(int i = 0;i < primes.size();i++){
+		std::cout << primes[i] << " ";
+	}
+	std::cout << std::endl;
+
+
+
 	Key decryption(1901);
 	decryption.modulo = 3071;
 

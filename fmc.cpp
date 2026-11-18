@@ -87,6 +87,8 @@ std::string fmc::turn_into_string(std::vector<int>& blocks){
 		message += code;
 	}
 
+	std::cout << message << std::endl;
+
 	std::string message_decoded = "";
 	for(int i = 0; i < message.size()/2;i++){
 		message_decoded += get_char_from_map(std::stoi(message.substr(i*2, 2)));
@@ -123,4 +125,70 @@ void fmc::encrypt_block(Key key, int& block){
 
 void fmc::decrypt_block(Key key, int& block){
 	block = pow_mod(block, key.decryption, key.modulo);
+}
+
+
+std::vector<int> fmc::sieve_all_primes(int n){
+	std::vector<int> primes;
+	std::vector<bool> is_prime(n + 1, true);
+	for(int i = 2; i*i <= n;i++){
+		if(is_prime[i]){
+			for(int x = i * i; x <= n; x += i){
+				is_prime[x] = false;
+			}
+		}
+	}
+
+	for(int i = 2; i <= n;i++){
+		if(is_prime[i]){
+			primes.push_back(i);
+		}
+	}
+	return primes;
+}
+
+// what we prolly need
+// is something like 
+// run through prime vector
+// run through prime vector starting with i
+// multiply them, check if equals our public key
+// if it does, find the inverse of (p-1)(q-1) with exponential mod modulo
+// then use that inverse as the decryption 
+// repeat till all options exhausted
+// check all outputs to see which one was right
+
+void fmc::find_decryption_keys(Key key, std::vector<int> message_blocks){
+
+	
+	std::vector<int> primes = sieve_all_primes(key.exponential);
+
+	for(int i = 0; i < primes.size();i++){
+		for(int o = i+1; o < primes.size();o++){
+			if(primes[i] * primes[o] == key.exponential){
+				int p = primes[i] - 1;
+				int q = primes[o] - 1;
+				// find inverse of encryption modulo (i-1)(o-1)
+				decrypt_and_print(key, p, q, message_blocks);
+				return;
+			}
+
+		}
+	}
+
+	std::cout << "Something went wrong? No prime factorization found" << std::endl;
+
+}
+
+
+int fmc::get_inverse(int exponential, int modulo){
+	return -1;
+}
+
+
+
+void fmc::decrypt_and_print(Key key, int p, int q, std::vector<int>& message_blocks){
+	decrypt_vector(key, message_blocks);
+	std::string message = turn_into_string(message_blocks);
+	std::cout << "D = " << key.decryption << " = " << p << " * " << q << " => " << message << std::endl;
+
 }
