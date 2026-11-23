@@ -143,7 +143,7 @@ std::vector<int> fmc::sieve_all_primes(int n){
 		if(is_prime[i]){
 			if( !(n % i) ){ // filter primes that do not divide n
 				primes.push_back(i);
-//				std::cout << "Prime that divides " << n << ": " << i << std::endl;
+				std::cout << "Prime that divides " << n << ": " << i << std::endl;
 			}
 		}
 	}
@@ -172,11 +172,12 @@ void fmc::find_decryption_keys(Key key, std::vector<int> message_blocks){
 				int p = primes[i] - 1;
 				int q = primes[o] - 1;
 				int pq = p * q;
+				std::cout << pq << " = (" << primes[i] << " - 1) * (" << primes[o] << " - 1)" << std::endl;
 				// find inverse of encryption modulo (i-1)(o-1)
 
 				key.decryption = get_inverse(key.exponential, pq);
 
-				decrypt_and_print(key, p, q, message_blocks);
+				decrypt_and_print(key, message_blocks);
 				return;
 			}
 

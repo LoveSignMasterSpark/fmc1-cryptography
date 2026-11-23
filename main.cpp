@@ -17,6 +17,7 @@ int main(){
 	fmc::find_decryption_keys(key, message_blocks);
 	std::cout << std::endl << std::endl;
 
+//	separator
 
 	Key decryption(1901);
 	decryption.modulo = 3071;
@@ -27,8 +28,46 @@ int main(){
 	fmc::turn_into_array(encrypted, vetor);
 	fmc::decrypt_and_print(decryption, vetor);
 
+//	separator
+
+	int number = 152;
+	int number_2 = number;
+	std::vector<int> number_list;
+	std::vector<bool> byte_list;
+	bool found_match = false;
+	while(!found_match){
+
+		number_list.push_back(number_2);
+		number_2 *= 2;
+		if(number_2 >= 1000){
+			byte_list.push_back(true);
+			number_2 -= 1000;
+		}
+		else{
+			byte_list.push_back(false);
+		}
 
 
+		for(int i = 0; i < number_list.size(); i++){
+			if(number_2 == number_list[i]){
+				found_match = true;
+				break;
+			}
+		}
+		if(number_list.size() > 10000){ break; } // yeah just a catch all
+
+	}
+	// this is gonna break im sure of it
+
+	if(found_match){
+		std::cout << std::endl << number << " => " << byte_list.size() << " bytes => ";
+		for(int i = 0;i < byte_list.size();i++){
+			std::cout << byte_list[i];	
+		}
+		std::cout << std::endl;
+	} else {
+		std::cout << std::endl << "1000 entries reached but no match" << std::endl;
+	}
 /*
 
 	Key key(2537, 13, 937);
