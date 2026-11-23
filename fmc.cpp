@@ -220,7 +220,11 @@ int fmc::get_inverse(int value, int modulo){
 
 }
 
-
+void fmc::decrypt_and_print(Key key, std::vector<int>& message_blocks){
+	decrypt_vector(key, message_blocks);
+	std::string message = turn_into_string(message_blocks);
+	std::cout << "D = " << key.decryption << " => " << message << std::endl;
+}
 
 void fmc::decrypt_and_print(Key key, int p, int q, std::vector<int>& message_blocks){
 	decrypt_vector(key, message_blocks);

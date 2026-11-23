@@ -15,9 +15,8 @@ int main(){
 	fmc::turn_into_array(message_encrypted, message_blocks);
 
 	fmc::find_decryption_keys(key, message_blocks);
+	std::cout << std::endl << std::endl;
 
-
-/*
 
 	Key decryption(1901);
 	decryption.modulo = 3071;
@@ -26,23 +25,8 @@ int main(){
 	std::vector<int> vetor;
 
 	fmc::turn_into_array(encrypted, vetor);
-	
-	for(int i = 0; i < vetor.size(); i++){
-		std::cout << vetor[i] << " ";
-	}
-	std::cout << std::endl;
-	
-	fmc::decrypt_vector(decryption, vetor);
-	
-	for(int i = 0; i < vetor.size(); i++){
-		std::cout << vetor[i] << " ";
-	}
-	std::cout << std::endl;
+	fmc::decrypt_and_print(decryption, vetor);
 
-
-	std::cout << fmc::turn_into_string(vetor) << std::endl;
-
-*/
 
 
 /*

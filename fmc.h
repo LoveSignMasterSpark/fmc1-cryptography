@@ -41,7 +41,9 @@ static void find_decryption_keys(Key key, std::vector<int> message_blocks);
 
 static std::vector<int> sieve_all_primes(int n);
 
+static void decrypt_and_print(Key key, std::vector<int>& message_blocks); 
 static void decrypt_and_print(Key key, int p, int q, std::vector<int>& message_blocks);
+
 static int get_inverse(int exponential, int modulo);	
 
 // god i wish there was an easier way of doing this. . .
