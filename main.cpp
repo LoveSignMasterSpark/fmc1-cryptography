@@ -6,14 +6,12 @@
 
 int main(){
 
-//	decryption of message given only its encryption key, not decryption
+//	decryption of message given only its encryption key and modulo
 	Key key(14279, 5347);
 	std::string message_encrypted = "4961-3072-9263-324-11807-4221-551-13714-1351-7742-13335-1748-5453-1183-4591-6815-1748-4221-1501-131-263-3435-3382-13501-7616-6966-393-13055-6309-1183-916-6904-11807-3371-3749";
-
 	std::vector<int> message_blocks;
 
 	fmc::turn_into_array(message_encrypted, message_blocks);
-
 	fmc::find_decryption_keys(key, message_blocks);
 	std::cout << std::endl << std::endl;
 
