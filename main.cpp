@@ -6,7 +6,7 @@
 
 int main(){
 
-
+//	decryption of message given only its encryption key, not decryption
 	Key key(14279, 5347);
 	std::string message_encrypted = "4961-3072-9263-324-11807-4221-551-13714-1351-7742-13335-1748-5453-1183-4591-6815-1748-4221-1501-131-263-3435-3382-13501-7616-6966-393-13055-6309-1183-916-6904-11807-3371-3749";
 
@@ -17,8 +17,7 @@ int main(){
 	fmc::find_decryption_keys(key, message_blocks);
 	std::cout << std::endl << std::endl;
 
-//	separator
-
+//	start of decryption of our given message by its decryption key
 	Key decryption(1901);
 	decryption.modulo = 3071;
 
@@ -27,9 +26,12 @@ int main(){
 
 	fmc::turn_into_array(encrypted, vetor);
 	fmc::decrypt_and_print(decryption, vetor);
+	
+	return 0;
+}
 
-//	separator
-
+//	algorithm made to better intuit byte range of numbers ; UNUSED
+/*
 	int number = 152;
 	int number_2 = number;
 	std::vector<int> number_list;
@@ -57,7 +59,6 @@ int main(){
 		if(number_list.size() > 10000){ break; } // yeah just a catch all
 
 	}
-	// this is gonna break im sure of it
 
 	if(found_match){
 		std::cout << std::endl << number << " => " << byte_list.size() << " bytes => ";
@@ -68,41 +69,4 @@ int main(){
 	} else {
 		std::cout << std::endl << "1000 entries reached but no match" << std::endl;
 	}
-/*
-
-	Key key(2537, 13, 937);
-	std::cout << "Number of digits possible: " << key.get_max_digits() << std::endl;
-
-	std::vector<int> vetor_teste;
-
-	fmc::turn_into_numerals("ABCDEFGHIJKLMNOPQRSTUVWXYZ ", vetor_teste, key.get_max_digits());
-
-	std::cout << "644's bit width: " << fmc::bit_width(644) << std::endl;
-
-
-	for(int i = 0; i < vetor_teste.size();i++){
-		std::cout << vetor_teste[i] << " ";
-	}
-	std::cout << std::endl;
-
-	// encrypt
-	fmc::encrypt_vector(key, vetor_teste);
-
-	for(int i = 0; i < vetor_teste.size();i++){
-		std::cout << vetor_teste[i] << " ";
-	}
-	std::cout << std::endl;
-
-
-	// decrypt
-	fmc::decrypt_vector(key, vetor_teste);	
-	for(int i = 0; i < vetor_teste.size();i++){
-		std::cout << vetor_teste[i] << " ";
-	}
-	std::cout << std::endl;
-
-
-	std::cout << fmc::turn_into_string(vetor_teste) << std::endl;
 */
-	return 0;
-}
