@@ -11,21 +11,21 @@
 class fmc{
 public:
 
-// returns amount of bits needed to represent number in base 2 (needed for power modulo calculation)
-static int bit_width(int n);
-
-// returns mod of b power n mod m
-static int pow_mod(int b, int n, int m);
-
-// main encryption function that turns string into RSA encrypted vector
+// main encryption function that turns string into RSA encrypted vector ; UNUSED
 static void turn_into_numerals(std::string raw, std::vector<int>& blocks, int key_size);
 
 // main decryption function that will parse our input number string and output it as our vector of choice
 static void turn_into_array(std::string numbers, std::vector<int>& blocks);
 
-// please disregard this.
+// function that transforms our decrypted vector into one single string, to be later read by our lookup map.
 static std::string turn_into_string(std::vector<int>& blocks);
-	
+
+// helper function that runs every function needed to decrypt our given encrypted message 
+static void find_decryption_keys(Key key, std::vector<int> message_blocks);
+
+// helper function to run decrypt functions and automatically print
+static void decrypt_and_print(Key key, std::vector<int>& message_blocks); 
+static void decrypt_and_print(Key key, int p, int q, std::vector<int>& message_blocks);
 
 static void encrypt_vector(Key key, std::vector<int>& blocks);
 static void decrypt_vector(Key key, std::vector<int>& blocks);
@@ -33,18 +33,25 @@ static void decrypt_vector(Key key, std::vector<int>& blocks);
 static void encrypt_block(Key key, int& block);
 static void decrypt_block(Key key, int& block);
 
+// -------------------------
+
+// returns b ^ n (mod m) using fast modular exponentiation
+static int pow_mod(int b, int n, int m);
+
+// modified sieve of eratosthenes to find n's prime factorization candidates
+static std::vector<int> sieve_all_primes(int n);
+
+// math function that uses modified Extended Euclidean Algorithm to find our modular inverse
+static int get_inverse(int exponential, int modulo);	
+
+// returns amount of bits needed to represent number in base 2 (needed for pow_mod)
+static int bit_width(int n);
+
+// ------------------------
+
 // helper functions to exchange values from our own alphabet lookup tables
 static int get_int_from_map(char c);
 static char get_char_from_map(int n);
-
-static void find_decryption_keys(Key key, std::vector<int> message_blocks);
-
-static std::vector<int> sieve_all_primes(int n);
-
-static void decrypt_and_print(Key key, std::vector<int>& message_blocks); 
-static void decrypt_and_print(Key key, int p, int q, std::vector<int>& message_blocks);
-
-static int get_inverse(int exponential, int modulo);	
 
 // god i wish there was an easier way of doing this. . .
 inline static const std::unordered_map<int, char> alphabet_int{

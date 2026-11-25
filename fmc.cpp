@@ -4,30 +4,7 @@
 #include <cmath>
 #include <iostream>
 
-int fmc::bit_width(int n){
-	if(n <= 0) return -1;
-	int bits = 0;
-	while(n > 0){
-		bits++;
-		n >>= 1;
-	}
-	return bits;
-}
-
-int fmc::pow_mod(int b, int n, int m){
-	int remainder = 1;
-	int power = b % m;
-
-	// gets base 2 representation of number, inline with fast modular exponentiation from Discrete Mathematics
-	for(int i = 0; i < fmc::bit_width(n);i++){
-		if(n >> i & 1){
-			remainder = (remainder*power) % m;
-		}
-		power = (power*power) % m;
-	}
-	return remainder;
-}
-
+// legacy function used to better intuit encryption methods, unused by our current program
 void fmc::turn_into_numerals(std::string raw, std::vector<int>& blocks, int block_size){
 	// cleans up string, leaves only characters handled by our system
 	// ugly, needs to be its own function eventually
@@ -79,8 +56,8 @@ void fmc::turn_into_array(std::string numbers, std::vector<int>& blocks){
 }
 
 std::string fmc::turn_into_string(std::vector<int>& blocks){
-	// yeah this is gonna be ugly as fuck
-	// yeah fuck ittt 
+	// horrible use of unnecessary conversions
+	// basically goes from int, to string, to int, to string again
 	std::string message = "";
 	for(int i = 0; i < blocks.size(); i++){
 		std::string code = std::to_string(blocks[i]);
@@ -95,20 +72,47 @@ std::string fmc::turn_into_string(std::vector<int>& blocks){
 	}
 
 	return message_decoded;
+}
+
+void fmc::find_decryption_keys(Key key, std::vector<int> message_blocks){
+	
+	std::vector<int> primes = sieve_all_primes(key.modulo);
+	
+	// find our primes that multiplied, equals our key.modulo
+	for(int i = 0; i < primes.size();i++){
+		for(int o = i+1; o < primes.size();o++){
+			if(primes[i] * primes[o] == key.modulo){
+				int p = primes[i] - 1;
+				int q = primes[o] - 1;
+				int pq = p * q;
+				std::cout << pq << " = (" << primes[i] << " - 1) * (" << primes[o] << " - 1)" << std::endl;
+				// find inverse of encryption modulo (i-1)(o-1)
+
+				key.decryption = get_inverse(key.exponential, pq);
+
+				// then run decryption with our inverse
+				decrypt_and_print(key, message_blocks);
+				return;
+			}
+
+		}
+	}
+
+	std::cout << "Something went wrong? No prime factorization found" << std::endl;
 
 }
 
-
-// this wouldve been prettier if i did this in java
-// but hindsight is 20 20 etc etc
-int fmc::get_int_from_map(char c){
-	if(auto search = alphabet_char.find(c); search != alphabet_char.end()){ return search->second; }
-	else { return 11; }
+void fmc::decrypt_and_print(Key key, std::vector<int>& message_blocks){
+	decrypt_vector(key, message_blocks);
+	std::string message = turn_into_string(message_blocks);
+	std::cout << "D = " << key.decryption << " => " << message << std::endl;
 }
 
-char fmc::get_char_from_map(int n){
-	if(auto search = alphabet_int.find(n); search != alphabet_int.end()){ return search->second; }
-	else {	return 'A'; }
+void fmc::decrypt_and_print(Key key, int p, int q, std::vector<int>& message_blocks){
+	decrypt_vector(key, message_blocks);
+	std::string message = turn_into_string(message_blocks);
+	std::cout << "D = " << key.decryption << " = " << p << " * " << q << " => " << message << std::endl;
+
 }
 
 void fmc::encrypt_vector(Key key, std::vector<int>& blocks){
@@ -127,6 +131,24 @@ void fmc::decrypt_block(Key key, int& block){
 	block = pow_mod(block, key.decryption, key.modulo);
 }
 
+
+// ------------------
+
+
+int fmc::pow_mod(int b, int n, int m){
+	int remainder = 1;
+	int power = b % m;
+
+	// gets base 2 representation of number, inline with fast modular exponentiation from Discrete Mathematics
+	// basically uses the fact that an int is already represented as 2^n + 2^n-1 + ... + 2^0 to run this calc
+	for(int i = 0; i < fmc::bit_width(n);i++){
+		if(n >> i & 1){
+			remainder = (remainder*power) % m;
+		}
+		power = (power*power) % m;
+	}
+	return remainder;
+}
 
 std::vector<int> fmc::sieve_all_primes(int n){
 	std::vector<int> primes;
@@ -150,44 +172,6 @@ std::vector<int> fmc::sieve_all_primes(int n){
 //	std::cout << std::endl;
 	return primes;
 }
-
-// what we prolly need
-// is something like 
-// run through prime vector
-// run through prime vector starting with i
-// multiply them, check if equals our public key
-// if it does, find the inverse of (p-1)(q-1) with exponential mod modulo
-// then use that inverse as the decryption 
-// repeat till all options exhausted
-// check all outputs to see which one was right
-
-void fmc::find_decryption_keys(Key key, std::vector<int> message_blocks){
-
-	
-	std::vector<int> primes = sieve_all_primes(key.modulo);
-
-	for(int i = 0; i < primes.size();i++){
-		for(int o = i+1; o < primes.size();o++){
-			if(primes[i] * primes[o] == key.modulo){
-				int p = primes[i] - 1;
-				int q = primes[o] - 1;
-				int pq = p * q;
-				std::cout << pq << " = (" << primes[i] << " - 1) * (" << primes[o] << " - 1)" << std::endl;
-				// find inverse of encryption modulo (i-1)(o-1)
-
-				key.decryption = get_inverse(key.exponential, pq);
-
-				decrypt_and_print(key, message_blocks);
-				return;
-			}
-
-		}
-	}
-
-	std::cout << "Something went wrong? No prime factorization found" << std::endl;
-
-}
-
 
 int fmc::get_inverse(int value, int modulo){
 	int original_modulo = modulo;
@@ -215,21 +199,32 @@ int fmc::get_inverse(int value, int modulo){
 		}
 	}
 
-	// brother. you should put me in front of the firing squad for this one.
+	// not happy with this implementation (unreadable), but it works 
 	std::cout << "Found as inverse: " << last_inverse << std::endl;
 	return last_inverse;
 
 }
 
-void fmc::decrypt_and_print(Key key, std::vector<int>& message_blocks){
-	decrypt_vector(key, message_blocks);
-	std::string message = turn_into_string(message_blocks);
-	std::cout << "D = " << key.decryption << " => " << message << std::endl;
+int fmc::bit_width(int n){
+	if(n <= 0) return -1;
+	int bits = 0;
+	while(n > 0){
+		bits++;
+		n >>= 1;
+	}
+	return bits;
 }
 
-void fmc::decrypt_and_print(Key key, int p, int q, std::vector<int>& message_blocks){
-	decrypt_vector(key, message_blocks);
-	std::string message = turn_into_string(message_blocks);
-	std::cout << "D = " << key.decryption << " = " << p << " * " << q << " => " << message << std::endl;
+// -------------------------
 
+// this wouldve been prettier if i did this in java
+// but hindsight is 20 20 etc etc
+int fmc::get_int_from_map(char c){
+	if(auto search = alphabet_char.find(c); search != alphabet_char.end()){ return search->second; }
+	else { return 11; }
+}
+
+char fmc::get_char_from_map(int n){
+	if(auto search = alphabet_int.find(n); search != alphabet_int.end()){ return search->second; }
+	else {	return 'A'; }
 }
